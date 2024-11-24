@@ -90,13 +90,13 @@ impl Passgen {
     }
 }
 
-/*#[cfg(test)]
+#[cfg(test)]
 mod tests {
-    use super::*;
+    use crate::Passgen;
 
     #[test]
     fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
+        let result = Passgen::default().generate();
+        assert_ne!(result.len(), 0);
     }
-}*/
+}
