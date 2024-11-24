@@ -1,0 +1,21 @@
+[package]
+name = "passgen-lib"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.82"
+license = "MIT"
+description = "Library for passwords and tokens generating."
+readme = "README.md"
+authors = ["Mamontov Konstantin <k@mamont.xyz>"]
+homepage = "https://github.com/mammothcoding/passgen-lib"
+repository = "https://github.com/mammothcoding/passgen-lib"
+keywords = ["generator", "password", "token", "crypto-resistant", "library"]
+categories = ["authentication", "cryptography"]
+exclude = [".*"]
+
+[lib]
+name = "passgenlib"
+path = "src/lib.rs"
+
+[dependencies]
+rand = "*"
