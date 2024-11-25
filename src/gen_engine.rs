@@ -24,13 +24,14 @@ pub mod gen_engine {
             let mut rng = rand::thread_rng();
             let mut pass_assembly: Vec<&[u8]> = Vec::new();
 
-            if self.enab_strong_usab
+            if self.custom_charset.len() != 0 {
+                pass_assembly.push(self.custom_charset.as_ref());
+            } else if self.enab_strong_usab
                 || (!self.enab_letters
                     && !self.enab_u_letters
                     && !self.enab_num
                     && !self.enab_spec_symbs)
             {
-                self.enab_strong_usab = true;
                 pass_assembly.push(STRONG_USAB_CHARSET);
             } else {
                 if self.enab_letters {

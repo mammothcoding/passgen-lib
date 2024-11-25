@@ -34,10 +34,14 @@ pub struct Passgen {
     ///
     /// ⚠️ If this rule is enabled, the other consistency rules of the generating are not taken.
     pub enab_strong_usab: bool,
+    /// User defined character set.
+    ///
+    /// ⚠️ This set of characters will exclude all other rules.
+    pub custom_charset: &'static str,
 }
 
 impl Passgen {
-    /// Set default field values for Passgen (*all rules on*).
+    /// Set default ruleset of Passgen to *"all simple rules are enables"*.
     pub fn default() -> Passgen {
         Passgen {
             enab_letters: true,
@@ -45,22 +49,25 @@ impl Passgen {
             enab_num: true,
             enab_spec_symbs: true,
             enab_strong_usab: false,
+            custom_charset: "",
         }
     }
 
-    /// Set default field values for `Passgen` (*Strong & usability*).
+    /// Set default ruleset of `Passgen` to *"Strong & usability"*.
     ///
     /// Including all characters, but
     /// the first position in the password is a capital or small letter,
     /// the last position is the symbol. Excluded ambiguous characters `"0oOiIlL1"`.
     ///
-    /// ⚠️ If this rule is enabled, the other consistency rules of the generating are not taken.
+    /// ⚠️ If this rule is enabled, the other consistency rules of the generating are not taken,
+    /// except for a rule `custom_charset`.
     pub fn default_strong_and_usab() -> Passgen {
         Passgen {
             enab_letters: false,
             enab_u_letters: false,
             enab_num: false,
             enab_spec_symbs: false,
+            custom_charset: "",
             enab_strong_usab: true,
         }
     }
@@ -95,9 +102,18 @@ impl Passgen {
     /// the first position in the password is a capital or small letter,
     /// the last position is the symbol. Excluded ambiguous characters `"0oOiIlL1"`.
     ///
-    /// ⚠️ If this rule is enabled, the other consistency rules of the generating are not taken.
+    /// ⚠️ If this rule is enabled, the other consistency rules of the generating are not taken,
+    /// except for a rule `custom_charset`.
     pub fn set_enabled_strong_usab(&mut self, value: bool) -> &mut Passgen {
         self.enab_strong_usab = value;
+        self
+    }
+
+    /// Set user defined character set.
+    ///
+    /// ⚠️ This set of characters will exclude all other rules.
+    pub fn set_custom_charset(&mut self, value: &'static str) -> &mut Passgen {
+        self.custom_charset = value;
         self
     }
 
@@ -106,8 +122,12 @@ impl Passgen {
         let res_len = if len < 4 { 4 } else { len };
 
         let mut pwd = self.generate_pass(res_len);
-        while !self.is_valid_pwd_by_consist(pwd.clone()) {
-            pwd = self.generate_pass(res_len);
+
+        if self.custom_charset.len() == 0
+        {
+            while !self.is_valid_pwd_by_consist(pwd.clone()) {
+                pwd = self.generate_pass(res_len);
+            }
         }
         pwd
     }
@@ -119,7 +139,14 @@ mod tests {
 
     #[test]
     fn it_works() {
-        assert_ne!(Passgen::default().set_enabled_letters(true).generate(4).len(), 0);
+        assert_ne!(
+            Passgen::default()
+                .set_enabled_letters(true)
+                .generate(4)
+                .len(),
+            0
+        );
         assert_ne!(Passgen::default_strong_and_usab().generate(4).len(), 0);
+        assert_ne!(Passgen::default().set_custom_charset("bla@321.").generate(4).len(), 0);
     }
 }
