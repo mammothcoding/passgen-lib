@@ -1,6 +1,6 @@
 pub mod gen_engine {
-    use rand::Rng;
     use crate::Passgen;
+    use rand::Rng;
 
     // Letters charset.
     const LETTERS_CHARSET: &[u8] = b"abcdefghijklmnopqrstuvwxyz";
@@ -20,12 +20,15 @@ pub mod gen_engine {
     const STRONG_USAB_LETTERS_CHARSET: &[u8] = b"ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz";
 
     impl Passgen {
-        pub(crate) fn generate_pass(&mut self) -> String {
+        pub(crate) fn generate_pass(&mut self, res_len: u32) -> String {
             let mut rng = rand::thread_rng();
             let mut pass_assembly: Vec<&[u8]> = Vec::new();
 
             if self.enab_strong_usab
-                || (!self.enab_letters && !self.enab_u_letters && !self.enab_num && !self.enab_spec_symbs)
+                || (!self.enab_letters
+                    && !self.enab_u_letters
+                    && !self.enab_num
+                    && !self.enab_spec_symbs)
             {
                 self.enab_strong_usab = true;
                 pass_assembly.push(STRONG_USAB_CHARSET);
@@ -46,17 +49,17 @@ pub mod gen_engine {
 
             let pass_charset: Vec<u8> = pass_assembly.into_iter().flatten().cloned().collect();
             let mut pass_candidate_vec: Vec<u8> = Vec::new();
-            let pass_processing_len: u32 = self.res_len.parse::<u32>().unwrap();
 
             if self.enab_strong_usab {
-                let letters_charset: Vec<u8> = STRONG_USAB_LETTERS_CHARSET.into_iter().cloned().collect();
+                let letters_charset: Vec<u8> =
+                    STRONG_USAB_LETTERS_CHARSET.into_iter().cloned().collect();
                 let simp_symb_charset: Vec<u8> = SIMP_SYMB_CHARSET.into_iter().cloned().collect();
 
                 // gen first pass symbol from all letters
                 pass_candidate_vec.push(letters_charset[rng.gen_range(0..letters_charset.len())]);
 
                 // gen main pass body
-                for _ in 0..(pass_processing_len - 2) {
+                for _ in 0..(res_len - 2) {
                     pass_candidate_vec.push(pass_charset[rng.gen_range(0..pass_charset.len())]);
                 }
 
@@ -66,7 +69,7 @@ pub mod gen_engine {
 
                 String::from_utf8(pass_candidate_vec).unwrap()
             } else {
-                (0..pass_processing_len)
+                (0..res_len)
                     .map(|_| pass_charset[rng.gen_range(0..pass_charset.len())] as char)
                     .collect()
             }

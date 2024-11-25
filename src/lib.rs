@@ -1,6 +1,22 @@
 mod gen_engine;
 
-/// Main structure.
+/// Main [Passgen] structure.
+///
+/// # Examples
+///
+/// You can create a strong token:
+///
+/// ```
+/// use passgenlib::Passgen;
+/// let pwd = Passgen::default().generate(30);
+/// ```
+///
+/// You can create a simple strong and usability password:
+///
+/// ```
+/// use passgenlib::Passgen;
+/// let pwd = Passgen::default_strong_and_usab().generate(8);
+/// ```
 pub struct Passgen {
     /// Presence of letters.
     pub enab_letters: bool,
@@ -10,83 +26,90 @@ pub struct Passgen {
     pub enab_num: bool,
     /// Presence of special characters.
     pub enab_spec_symbs: bool,
-    /// Length of the result.
-    pub res_len: String,
-    /// Minimal length of the result.
-    pub min_res_len: u32,
-    /// Maximal length of the result.
-    pub max_res_len: u32,
+    /// Set default field values for `Passgen` (Strong & usability).
+    ///
     /// Including all characters, but
     /// the first position in the password is a capital or small letter,
-    /// the last position is the symbol. Excluded ambiguous characters "0oOiIlL1".
-    /// If this rule is enabled, the other consistency rules of the result are not taken.
+    /// the last position is the symbol. Excluded ambiguous characters `"0oOiIlL1"`.
+    ///
+    /// ⚠️ If this rule is enabled, the other consistency rules of the generating are not taken.
     pub enab_strong_usab: bool,
 }
 
 impl Passgen {
-    /// Set default values for Passgen.
+    /// Set default field values for Passgen (*all rules on*).
     pub fn default() -> Passgen {
+        Passgen {
+            enab_letters: true,
+            enab_u_letters: true,
+            enab_num: true,
+            enab_spec_symbs: true,
+            enab_strong_usab: false,
+        }
+    }
+
+    /// Set default field values for `Passgen` (*Strong & usability*).
+    ///
+    /// Including all characters, but
+    /// the first position in the password is a capital or small letter,
+    /// the last position is the symbol. Excluded ambiguous characters `"0oOiIlL1"`.
+    ///
+    /// ⚠️ If this rule is enabled, the other consistency rules of the generating are not taken.
+    pub fn default_strong_and_usab() -> Passgen {
         Passgen {
             enab_letters: false,
             enab_u_letters: false,
             enab_num: false,
             enab_spec_symbs: false,
-            res_len: "8".to_string(),
-            min_res_len: 4,
-            max_res_len: 10000,
             enab_strong_usab: true,
         }
     }
 
-    pub fn get_rule_state(&self, rule_name: &str) -> bool {
-        match rule_name {
-            "letters" => self.enab_letters.clone(),
-            "u_letters" => self.enab_u_letters.clone(),
-            "numbs" => self.enab_num.clone(),
-            "spec_symbs" => self.enab_spec_symbs.clone(),
-            "convenience_criterion" => self.enab_strong_usab.clone(),
-            _ => true,
-        }
+    /// Set value of the field `enab_letters` for `Passgen`.
+    pub fn set_enabled_letters(&mut self, value: bool) -> &mut Passgen {
+        self.enab_letters = value;
+        self
     }
 
-    pub fn set_rule_state(&mut self, rule_name: &str, new_val: bool) {
-        match rule_name {
-            "letters" => self.enab_letters = new_val,
-            "u_letters" => self.enab_u_letters = new_val,
-            "numbs" => self.enab_num = new_val,
-            "spec_symbs" => self.enab_spec_symbs = new_val,
-            "convenience_criterion" => self.enab_strong_usab = new_val,
-            _ => {}
-        }
+    /// Set value of the field `enab_u_letters` for `Passgen`.
+    pub fn set_enabled_uppercase_letters(&mut self, value: bool) -> &mut Passgen {
+        self.enab_u_letters = value;
+        self
     }
 
-    pub fn generate(&mut self) -> String {
-        if self.is_valid_user_input() {
-            let mut pwd = self.generate_pass();
-            while !self.is_valid_pwd_by_consist(pwd.clone()) {
-                pwd = self.generate_pass();
-            }
-            pwd
-        } else {
-            "error_bla".to_string().parse().unwrap()
-        }
-
-        //self.pwd_len.clear();
-        //self.reset_cursor();
+    /// Set value of the field `enab_num` for `Passgen`.
+    pub fn set_enabled_numbers(&mut self, value: bool) -> &mut Passgen {
+        self.enab_num = value;
+        self
     }
 
-    fn is_valid_user_input(&self) -> bool {
-        let parse_res = self.res_len.parse::<u32>();
-        match parse_res {
-            Ok(val) => {
-                if val < self.min_res_len || val > self.max_res_len {
-                    false
-                } else {
-                    true
-                }
-            }
-            Err(_err) => false,
+    /// Set value of the field `enab_spec_symbs` for `Passgen`.
+    pub fn set_enabled_spec_symbols(&mut self, value: bool) -> &mut Passgen {
+        self.enab_spec_symbs = value;
+        self
+    }
+
+    /// Set value of the field `enab_strong_usab` for `Passgen`.
+    ///
+    /// Including all characters, but
+    /// the first position in the password is a capital or small letter,
+    /// the last position is the symbol. Excluded ambiguous characters `"0oOiIlL1"`.
+    ///
+    /// ⚠️ If this rule is enabled, the other consistency rules of the generating are not taken.
+    pub fn set_enabled_strong_usab(&mut self, value: bool) -> &mut Passgen {
+        self.enab_strong_usab = value;
+        self
+    }
+
+    /// Generate result. Argument "len" will not be less than 4
+    pub fn generate(&mut self, len: u32) -> String {
+        let res_len = if len < 4 { 4 } else { len };
+
+        let mut pwd = self.generate_pass(res_len);
+        while !self.is_valid_pwd_by_consist(pwd.clone()) {
+            pwd = self.generate_pass(res_len);
         }
+        pwd
     }
 }
 
@@ -96,7 +119,7 @@ mod tests {
 
     #[test]
     fn it_works() {
-        let result = Passgen::default().generate();
-        assert_ne!(result.len(), 0);
+        assert_ne!(Passgen::default().set_enabled_letters(true).generate(4).len(), 0);
+        assert_ne!(Passgen::default_strong_and_usab().generate(4).len(), 0);
     }
 }
