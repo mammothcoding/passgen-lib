@@ -26,13 +26,12 @@ pub struct Passgen {
     pub enab_num: bool,
     /// Presence of special characters.
     pub enab_spec_symbs: bool,
-    /// Set default field values for `Passgen` (Strong & usability).
-    ///
     /// Including all characters, but
     /// the first position in the password is a capital or small letter,
     /// the last position is the symbol. Excluded ambiguous characters `"0oOiIlL1"`.
     ///
-    /// ⚠️ If this rule is enabled, the other consistency rules of the generating are not taken.
+    /// ⚠️ If this rule is enabled, the other consistency rules of the generating are not taken,
+    /// except for a rule `custom_charset`.
     pub enab_strong_usab: bool,
     /// User defined character set.
     ///
@@ -41,7 +40,19 @@ pub struct Passgen {
 }
 
 impl Passgen {
-    /// Set default ruleset of Passgen to *"all simple rules are enables"*.
+    /// Get an instance of `Passgen` without any rules.
+    pub fn new() -> Passgen {
+        Passgen {
+            enab_letters: false,
+            enab_u_letters: false,
+            enab_num: false,
+            enab_spec_symbs: false,
+            enab_strong_usab: false,
+            custom_charset: "",
+        }
+    }
+
+    /// Set default ruleset of `Passgen` to *"all simple rules are enabled"*.
     pub fn default() -> Passgen {
         Passgen {
             enab_letters: true,
@@ -119,17 +130,30 @@ impl Passgen {
 
     /// Generate result. Argument "len" will not be less than 4
     pub fn generate(&mut self, len: u32) -> String {
-        let res_len = if len < 4 { 4 } else { len };
-
-        let mut pwd = self.generate_pass(res_len);
-
-        if self.custom_charset.len() == 0
+        if !self.is_ruleset_clean()
         {
-            while !self.is_valid_pwd_by_consist(pwd.clone()) {
-                pwd = self.generate_pass(res_len);
+            let res_len = if len < 4 { 4 } else { len };
+
+            let mut pwd = self.generate_pass(res_len);
+
+            if self.custom_charset.len() == 0 {
+                while !self.is_valid_pwd_by_consist(pwd.clone()) {
+                    pwd = self.generate_pass(res_len);
+                }
             }
+            pwd
+        } else {
+            "".to_string()
         }
-        pwd
+    }
+
+    fn is_ruleset_clean(&self) -> bool {
+        !self.enab_letters
+            && !self.enab_u_letters
+            && !self.enab_num
+            && !self.enab_spec_symbs
+            && !self.enab_strong_usab
+            && self.custom_charset.len() == 0
     }
 }
 
@@ -139,6 +163,7 @@ mod tests {
 
     #[test]
     fn it_works() {
+        assert_eq!(Passgen::new().generate(4).len(), 0);
         assert_ne!(
             Passgen::default()
                 .set_enabled_letters(true)
@@ -147,6 +172,12 @@ mod tests {
             0
         );
         assert_ne!(Passgen::default_strong_and_usab().generate(4).len(), 0);
-        assert_ne!(Passgen::default().set_custom_charset("bla@321.").generate(4).len(), 0);
+        assert_ne!(
+            Passgen::default()
+                .set_custom_charset("bla@321.")
+                .generate(4)
+                .len(),
+            0
+        );
     }
 }
