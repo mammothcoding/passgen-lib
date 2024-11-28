@@ -1,6 +1,8 @@
 pub mod gen_engine {
     use crate::Passgen;
-    use rand::Rng;
+    use rand::{Rng, SeedableRng};
+    use rand_hc::Hc128Rng;
+    use rand_isaac::Isaac64Rng;
 
     // Letters charset.
     const LETTERS_CHARSET: &[u8] = b"abcdefghijklmnopqrstuvwxyz";
@@ -21,7 +23,8 @@ pub mod gen_engine {
 
     impl Passgen {
         pub(crate) fn generate_pass(&mut self, res_len: u32) -> String {
-            let mut rng = rand::thread_rng();
+            let mut isaac_seeder = Isaac64Rng::from_entropy();
+            let mut rng = Hc128Rng::from_rng(&mut isaac_seeder).unwrap();
             let mut pass_assembly: Vec<&[u8]> = Vec::new();
 
             if self.custom_charset.len() != 0 {

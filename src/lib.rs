@@ -130,8 +130,7 @@ impl Passgen {
 
     /// Generate result. Argument "len" will not be less than 4
     pub fn generate(&mut self, len: u32) -> String {
-        if !self.is_ruleset_clean()
-        {
+        if !self.is_ruleset_clean() {
             let res_len = if len < 4 { 4 } else { len };
 
             let mut pwd = self.generate_pass(res_len);
@@ -165,13 +164,9 @@ mod tests {
     fn it_works() {
         assert_eq!(Passgen::new().generate(4).len(), 0);
         assert_ne!(
-            Passgen::default()
-                .set_enabled_letters(true)
-                .generate(4)
-                .len(),
+            Passgen::new().set_enabled_letters(true).generate(4).len(),
             0
         );
-        assert_ne!(Passgen::default_strong_and_usab().generate(4).len(), 0);
         assert_ne!(
             Passgen::default()
                 .set_custom_charset("bla@321.")
@@ -179,5 +174,6 @@ mod tests {
                 .len(),
             0
         );
+        assert_ne!(Passgen::default_strong_and_usab().generate(4).len(), 0);
     }
 }

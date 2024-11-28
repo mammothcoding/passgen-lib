@@ -19,5 +19,6 @@ path = "src/lib.rs"
 
 [dependencies]
 rand = "0.8.5"
-rand_isaac = "0.3.0"
 rand_seeder = "0.3.0"
+rand_isaac = "0.3.0"
+rand_hc = "0.3.2"
