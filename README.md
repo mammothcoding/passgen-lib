@@ -25,18 +25,18 @@ Library for generating cryptographically secure passwords/tokens and other sets 
 passgenlib = "1.0.0"
 ```
 
-#### You can create a strong token including all leterals, numbers and symbols:
+#### You can create a strong token including all leterals, numbers and special symbols with length 30 charasters:
 
 ```rust
 let result = Passgen::default().generate(30);
 ```
 
-#### You can create a strong and usability password:
+#### You can create a strong and usability password with length 8 charasters:
 
 ```rust
 let result = Passgen::default_strong_and_usab().generate(8);
 ```
-#### You can create a set from your custom charset:
+#### You can create a set from your custom charset with length 8 charasters:
 
 ```rust
 let result = Passgen::new().set_custom_charset("bla@.321").generate(8);
