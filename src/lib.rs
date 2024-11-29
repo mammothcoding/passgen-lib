@@ -4,18 +4,24 @@ mod gen_engine;
 ///
 /// # Examples
 ///
-/// You can create a strong token:
+/// You can create a strong token including all leterals, numbers and symbols:
 ///
 /// ```
 /// use passgenlib::Passgen;
-/// let pwd = Passgen::default().generate(30);
+/// let result = Passgen::default().generate(30);
 /// ```
 ///
-/// You can create a simple strong and usability password:
+/// You can create a strong and usability password:
 ///
 /// ```
 /// use passgenlib::Passgen;
-/// let pwd = Passgen::default_strong_and_usab().generate(8);
+/// let result = Passgen::default_strong_and_usab().generate(8);
+/// ```
+/// You can create a set from your custom charset:
+///
+/// ```
+/// use passgenlib::Passgen;
+/// let result = Passgen::new().set_custom_charset("bla@.321").generate(8);
 /// ```
 pub struct Passgen {
     /// Presence of letters.
@@ -128,10 +134,10 @@ impl Passgen {
         self
     }
 
-    /// Generate result. Argument "len" will not be less than 4
-    pub fn generate(&mut self, len: u32) -> String {
+    /// Generate result. Argument "length" will not be less than 4
+    pub fn generate(&mut self, length: u32) -> String {
         if !self.is_ruleset_clean() {
-            let res_len = if len < 4 { 4 } else { len };
+            let res_len = if length < 4 { 4 } else { length };
 
             let mut pwd = self.generate_pass(res_len);
 
