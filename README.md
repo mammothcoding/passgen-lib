@@ -19,7 +19,7 @@ Library for generating cryptographically secure passwords/tokens and other sets 
 
 ## Usage
 
-#### Include library in your project `Cargo.toml`:
+#### Include library to your project `Cargo.toml`:
 
 ```toml
 [dependencies]
