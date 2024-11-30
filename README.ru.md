@@ -1,8 +1,8 @@
 ![alt text](./McDev_thin_900x70.png "McDev_thin_900x70.png")
 
-[![Latest version](https://img.shields.io/crates/v/passgen_lib.svg)](https://crates.io/crates/passgen_lib)
-[![Download](https://img.shields.io/crates/d/passgen_lib.svg)](https://crates.io/crates/passgen_lib)
-[![docs.rs](https://docs.rs/passgen_lib/badge.svg)](https://docs.rs/passgen_lib/)
+[![Latest version](https://img.shields.io/crates/v/passgen-lib.svg)](https://crates.io/crates/passgen-lib)
+[![Download](https://img.shields.io/crates/d/passgen-lib.svg)](https://crates.io/crates/passgen-lib)
+[![docs.rs](https://docs.rs/passgen-lib/badge.svg)](https://docs.rs/passgen-lib/)
 [![MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://choosealicense.com/licenses/mit/)
 [![Build Status](https://github.com/mammothcoding/passgen-lib/actions/workflows/rust.yml/badge.svg?event=push)](https://github.com/mammothcoding/passgen-lib/actions/workflows/rust.yml)
 [![made-with-rust](https://img.shields.io/badge/Made%20with-Rust-1f425f.svg)](https://www.rust-lang.org/)
