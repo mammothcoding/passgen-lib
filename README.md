@@ -7,7 +7,7 @@
 [![Build Status](https://github.com/mammothcoding/passgen-lib/actions/workflows/rust.yml/badge.svg?event=push)](https://github.com/mammothcoding/passgen-lib/actions/workflows/rust.yml)
 [![made-with-rust](https://img.shields.io/badge/Made%20with-Rust-1f425f.svg)](https://www.rust-lang.org/)
 
-Readme in other languages:
+Readme in different languages:
 [EN](https://github.com/mammothcoding/passgen-lib/blob/master/README.md)
 [RU](https://github.com/mammothcoding/passgen-lib/blob/master/README.ru.md)
 
