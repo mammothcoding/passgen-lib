@@ -23,7 +23,7 @@ Library for generating cryptographically secure passwords/tokens and other sets 
 
 ```toml
 [dependencies]
-passgenlib = "1.0.0"
+passgenlib = "1.0.2"
 ```
 
 #### You can create a strong token including all leterals, numbers and special symbols with length 30 charasters:
