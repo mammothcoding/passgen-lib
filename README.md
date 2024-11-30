@@ -23,7 +23,7 @@ Library for generating cryptographically secure passwords/tokens and other sets 
 
 ```toml
 [dependencies]
-passgenlib = "1.0.2"
+passgenlib = "1.0.3"
 ```
 
 #### You can create a strong token including all leterals, numbers and special symbols with length 30 charasters:
@@ -44,7 +44,7 @@ let result = Passgen::new().set_custom_charset("bla@.321").generate(8);
 ```
 
 ### More information in docs:
-[Doc](https://docs.rs/passgenlib/latest/passgenlib/)
+[Doc](https://docs.rs/passgen-lib/)
 
 ## License
 

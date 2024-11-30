@@ -23,7 +23,7 @@ Readme на разных языках:
 
 ```toml
 [dependencies]
-passgenlib = "1.0.2"
+passgenlib = "1.0.3"
 ```
 
 #### Создать стойкий токен, включающий все летералы, цифры и специальные символы длиной 30 символов:
@@ -44,7 +44,7 @@ let result = Passgen::new().set_custom_charset("bla@.321").generate(8);
 ```
 
 ### Больше информации по использованию библиотеки в документации:
-[Doc](https://docs.rs/passgenlib/latest/passgenlib/)
+[Doc](https://docs.rs/passgen-lib/)
 
 ## Лицензия
 
