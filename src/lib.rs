@@ -26,12 +26,16 @@ mod gen_engine;
 pub struct Passgen {
     /// Presence of letters.
     pub enab_letters: bool,
+
     /// Presence of a capital letters.
     pub enab_u_letters: bool,
+
     /// Presence of numeric characters.
     pub enab_num: bool,
+
     /// Presence of special characters.
     pub enab_spec_symbs: bool,
+
     /// Including all characters, but
     /// the first position in the password is a capital or small letter,
     /// the last position is the symbol. Excluded ambiguous characters `"0oOiIlL1"`.
@@ -39,9 +43,12 @@ pub struct Passgen {
     /// ⚠️ If this rule is enabled, the other consistency rules of the generating are not taken,
     /// except for a rule `custom_charset`.
     pub enab_strong_usab: bool,
+
     /// User defined character set.
     ///
-    /// ⚠️ This set of characters will exclude all other rules.
+    /// ⚠️This set of characters will exclude all other rules except for a rule `"enab_strong_usab"`.
+    ///
+    /// ⚙️If `"enab_strong_usab"` on too then you can generate combined strong and usability result with custom charset.
     pub custom_charset: &'static str,
 }
 
@@ -128,7 +135,9 @@ impl Passgen {
 
     /// Set user defined character set.
     ///
-    /// ⚠️ This set of characters will exclude all other rules.
+    /// ⚠️This set of characters will exclude all other rules except for a rule `"enab_strong_usab"`.
+    ///
+    /// ⚙️If `"enab_strong_usab"` on too then you can generate combined strong and usability result with custom charset.
     pub fn set_custom_charset(&mut self, value: &'static str) -> &mut Passgen {
         self.custom_charset = value;
         self
