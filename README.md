@@ -22,7 +22,7 @@ Library for generating cryptographically secure passwords/tokens and other sets 
 #### Include library to your project `Cargo.toml`:
 ```toml
 [dependencies]
-passgenlib = "1.1.4"
+passgenlib = "1.1.0"
 ```
 
 #### You can create a strong token 30 characters long including all leterals, numbers and special symbols:
