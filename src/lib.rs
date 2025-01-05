@@ -134,6 +134,7 @@ impl Passgen {
     }
 
     /// Set user defined character set.
+    /// You can use any Unicode characters and emoji. For example: abcABC123⭕➖❎⚫⬛n₼⁂🙂
     ///
     /// ⚠️This set of characters will exclude all other rules except for a rule `"enab_strong_usab"`.
     ///
@@ -184,11 +185,12 @@ mod tests {
         );
         assert_ne!(
             Passgen::default()
-                .set_custom_charset("bla@321.")
+                .set_custom_charset("abcABC123⭕➖❎⚫⬛п₼⁂🙂")
                 .generate(4)
                 .len(),
             0
         );
+
         assert_ne!(Passgen::default_strong_and_usab().generate(4).len(), 0);
     }
 }

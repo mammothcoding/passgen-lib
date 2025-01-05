@@ -5,87 +5,89 @@ pub mod gen_engine {
     use rand_isaac::Isaac64Rng;
 
     // Letters charset.
-    const LETTERS_CHARSET: &[u8] = b"abcdefghijklmnopqrstuvwxyz";
+    const LETTERS_CHARSET: &str = "abcdefghijklmnopqrstuvwxyz";
     // Capital letters charset.
-    const U_LETTERS_CHARSET: &[u8] = b"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const U_LETTERS_CHARSET: &str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     // Numeric charset.
-    const NUM_CHARSET: &[u8] = b"0123456789";
+    const NUM_CHARSET: &str = "0123456789";
     // Special symbols charset.
-    const SPEC_SYMB_CHARSET: &[u8] = b")([]{}*&^%$#@!~";
+    const SPEC_SYMB_CHARSET: &str = ")([]{}*&^%$#@!~";
     // Simple special charset without inconvenient symbols.
-    const SIMP_SYMB_CHARSET: &[u8] = b"*&%$#@!";
+    const SIMP_SYMB_CHARSET: &str = "*&%$#@!";
     // Strong & usability charset.
     // Set without ambiguous and inconvenient letters with numbers.
-    const STRONG_USAB_CHARSET: &[u8] = b"ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789";
+    const STRONG_USAB_CHARSET: &str = "ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789";
     // Strong & usability letters charset.
     // Set without ambiguous and inconvenient letters.
-    const STRONG_USAB_LETTERS_CHARSET: &[u8] = b"ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz";
+    const STRONG_USAB_LETTERS_CHARSET: &str = "ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz";
 
     impl Passgen {
         pub(crate) fn generate_pass(&mut self, res_len: u32) -> String {
             let mut isaac_seeder = Isaac64Rng::from_entropy();
             let mut rng = Hc128Rng::from_rng(&mut isaac_seeder).unwrap();
-            let mut pass_assembly: Vec<&[u8]> = Vec::new();
+            let mut pass_assembly: Vec<char> = Vec::new();
 
             if self.custom_charset.len() != 0 {
-                pass_assembly.push(self.custom_charset.as_ref());
+                let mut cc_vec: Vec<char> = self.custom_charset.chars().into_iter().collect();
+                pass_assembly.append(&mut cc_vec);
             } else if self.enab_strong_usab
                 || (!self.enab_letters
                     && !self.enab_u_letters
                     && !self.enab_num
                     && !self.enab_spec_symbs)
             {
-                pass_assembly.push(STRONG_USAB_CHARSET);
+                let mut suc_vec: Vec<char> = STRONG_USAB_CHARSET.chars().into_iter().collect();
+                    pass_assembly.append(&mut suc_vec);
             } else {
                 if self.enab_letters {
-                    pass_assembly.push(LETTERS_CHARSET);
+                    let mut el_vec: Vec<char> = LETTERS_CHARSET.chars().into_iter().collect();
+                    pass_assembly.append(&mut el_vec);
                 }
                 if self.enab_u_letters {
-                    pass_assembly.push(U_LETTERS_CHARSET);
+                    let mut eul_vec: Vec<char> = U_LETTERS_CHARSET.chars().into_iter().collect();
+                    pass_assembly.append(&mut eul_vec);
                 }
                 if self.enab_num {
-                    pass_assembly.push(NUM_CHARSET);
+                    let mut en_vec: Vec<char> = NUM_CHARSET.chars().into_iter().collect();
+                    pass_assembly.append(&mut en_vec);
                 }
                 if self.enab_spec_symbs {
-                    pass_assembly.push(SPEC_SYMB_CHARSET);
+                    let mut ess_vec: Vec<char> = SPEC_SYMB_CHARSET.chars().into_iter().collect();
+                    pass_assembly.append(&mut ess_vec);
                 }
             }
 
-            let pass_charset: Vec<u8> = pass_assembly.into_iter().flatten().cloned().collect();
-            let mut pass_candidate_vec: Vec<u8> = Vec::new();
+            let mut pass_candidate_vec: Vec<char> = Vec::new();
 
             if self.enab_strong_usab {
-                let letters_charset: Vec<u8> =
-                    STRONG_USAB_LETTERS_CHARSET.into_iter().cloned().collect();
-                let simp_symb_charset: Vec<u8> = SIMP_SYMB_CHARSET.into_iter().cloned().collect();
+                let letters_charset: Vec<char> =
+                    STRONG_USAB_LETTERS_CHARSET.chars().into_iter().collect();
+                let simp_symb_charset: Vec<char> = SIMP_SYMB_CHARSET.chars().into_iter().collect();
 
                 // gen first pass symbol from all letters
                 pass_candidate_vec.push(letters_charset[rng.gen_range(0..letters_charset.len())]);
 
                 // gen main pass body
                 for _ in 0..(res_len - 2) {
-                    pass_candidate_vec.push(pass_charset[rng.gen_range(0..pass_charset.len())]);
+                    pass_candidate_vec.push(pass_assembly[rng.gen_range(0..pass_assembly.len())]);
                 }
 
                 // gen last pass symbol from simple symbols
                 pass_candidate_vec
                     .push(simp_symb_charset[rng.gen_range(0..simp_symb_charset.len())]);
-
-                String::from_utf8(pass_candidate_vec).unwrap()
             } else {
-                (0..res_len)
-                    .map(|_| pass_charset[rng.gen_range(0..pass_charset.len())] as char)
-                    .collect()
+                pass_candidate_vec = (0..res_len)
+                    .map(|_| pass_assembly[rng.gen_range(0..pass_assembly.len())])
+                    .collect();
             }
+            String::from_iter(pass_candidate_vec)
         }
 
         pub(crate) fn is_valid_pwd_by_consist(&self, pass: String) -> bool {
-            let pwd_in_bytes = pass.clone().into_bytes();
-
-            let check_to_available_for = |symbols: &[u8]| -> bool {
+            let check_to_available_for = |symbols: &str| -> bool {
                 let mut res = false;
-                for ch in &pwd_in_bytes {
-                    if symbols.contains(&ch) {
+                for ch in pass.chars() {
+                    if symbols.contains(ch) {
                         res = true;
                         break;
                     }

@@ -22,7 +22,7 @@ Library for generating cryptographically secure passwords/tokens and other sets 
 #### Include library to your project `Cargo.toml`:
 ```toml
 [dependencies]
-passgenlib = "1.0.4"
+passgenlib = "1.1.4"
 ```
 
 #### You can create a strong token 30 characters long including all leterals, numbers and special symbols:
@@ -37,7 +37,7 @@ let result = Passgen::default_strong_and_usab().generate(8);
 
 #### You can create a set from your custom charset 12 characters long:
 ```rust
-let result = Passgen::new().set_custom_charset("bla@.321").generate(12);
+let result = Passgen::new().set_custom_charset("abcABC123⭕➖❎⚫⬛п₼⁂🙂").generate(12);
 ```
 
 ### Example of library integration in the [passgen-cmd](https://github.com/mammothcoding/passgen-cmd) tool.
