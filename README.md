@@ -17,6 +17,8 @@ Library for generating cryptographically secure passwords/tokens and other sets 
 
 [CSPRNGs](https://rust-random.github.io/book/guide-rngs.html#cryptographically-secure-pseudo-random-number-generators-csprngs) Isaac64Rng and Hc128Rng are used.
 
+![alt text](./passgen-lib_demo.gif "passgen-lib_demo.gif")
+
 ## Usage
 
 #### Include library to your project `Cargo.toml`:
@@ -40,10 +42,15 @@ let result = Passgen::default_strong_and_usab().generate(8);
 let result = Passgen::new().set_custom_charset("abcABC123⭕➖❎⚫⬛п₼⁂🙂").generate(12);
 ```
 
-### Example of library integration in the [passgen-cmd](https://github.com/mammothcoding/passgen-cmd) tool.
+### Example of library integration in the [passgen-cmd](https://github.com/mammothcoding/passgen-cmd) tool and [passgen-telegram](https://github.com/mammothcoding/passgen-telegram) service.
 
 ### Library [doc](https://docs.rs/passgen-lib/).
 
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
+
+### Our other passgen projects:
+[passgen-desktop](https://github.com/mammothcoding/passgen-desktop)
+
+[passgen-console-linuxwin](https://github.com/mammothcoding/passgen-console-linuxwin)

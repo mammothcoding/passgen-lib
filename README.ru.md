@@ -17,6 +17,8 @@ Readme на разных языках:
 
 Используются [CSPRNGs](https://rust-random.github.io/book/guide-rngs.html#cryptographically-secure-pseudo-random-number-generators-csprngs) Isaac64Rng и Hc128Rng.
 
+![alt text](./passgen-lib_demo.gif "passgen-lib_demo.gif")
+
 ## Использование
 
 #### Включение библиотеки в свой проект `Cargo.toml`:
@@ -43,10 +45,14 @@ let result = Passgen::default_strong_and_usab().generate(8);
 let result = Passgen::new().set_custom_charset("abcABC123⭕➖❎⚫⬛п₼⁂🙂").generate(8);
 ```
 
-### Пример интеграции библиотеки в нашем инструментарии [passgen-cmd](https://github.com/mammothcoding/passgen-cmd).
+### Пример интеграции библиотеки в нашем инструментарии [passgen-cmd](https://github.com/mammothcoding/passgen-cmd) и [passgen-telegram](https://github.com/mammothcoding/passgen-telegram) сервис.
 
 ### Документация [тут](https://docs.rs/passgen-lib/).
 
 ## Лицензия
 
 [MIT](https://choosealicense.com/licenses/mit/)
+### Другие проекты для генерации паролей
+[passgen-desktop](https://github.com/mammothcoding/passgen-desktop)
+
+[passgen-console-linuxwin](https://github.com/mammothcoding/passgen-console-linuxwin)
