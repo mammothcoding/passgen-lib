@@ -54,3 +54,7 @@ let result = Passgen::new().set_custom_charset("abcABC123⭕➖❎⚫⬛п₼⁂
 [passgen-desktop](https://github.com/mammothcoding/passgen-desktop)
 
 [passgen-console-linuxwin](https://github.com/mammothcoding/passgen-console-linuxwin)
+
+[passgen-cmd](https://github.com/mammothcoding/passgen-cmd)
+
+[passgen-telegram](https://github.com/mammothcoding/passgen-telegram)
