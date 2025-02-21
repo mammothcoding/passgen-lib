@@ -1,13 +1,13 @@
 [package]
 name = "passgen-lib"
-version = "1.1.0"
-edition = "2021"
-rust-version = "1.83"
+version = "1.2.0"
+edition = "2024"
+rust-version = "1.85"
 license = "MIT"
 description = "Library for generating cryptographically secure passwords/tokens and other sets and sequences."
 readme = "README.md"
 authors = ["Mamontov Konstantin <k@mamont.xyz>"]
-homepage = "https://github.com/mammothcoding/passgen-lib"
+homepage = "https://passgen.mamont.xyz"
 repository = "https://github.com/mammothcoding/passgen-lib"
 keywords = ["generator", "password", "token", "crypto-resistant", "library"]
 categories = ["authentication", "cryptography"]
@@ -18,7 +18,6 @@ name = "passgenlib"
 path = "src/lib.rs"
 
 [dependencies]
-rand = "0.8.5"
-rand_seeder = "0.3.0"
-rand_isaac = "0.3.0"
-rand_hc = "0.3.2"
+rand = "0.9.0"
+rand_isaac = "0.4.0"
+rand_hc = "0.4.0"

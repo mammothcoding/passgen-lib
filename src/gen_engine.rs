@@ -23,8 +23,8 @@ pub mod gen_engine {
 
     impl Passgen {
         pub(crate) fn generate_pass(&mut self, res_len: u32) -> String {
-            let mut isaac_seeder = Isaac64Rng::from_entropy();
-            let mut rng = Hc128Rng::from_rng(&mut isaac_seeder).unwrap();
+            let mut isaac_seeder = Isaac64Rng::from_os_rng();
+            let mut rng = Hc128Rng::from_rng(&mut isaac_seeder);
             let mut pass_assembly: Vec<char> = Vec::new();
 
             if self.custom_charset.len() != 0 {
@@ -65,19 +65,19 @@ pub mod gen_engine {
                 let simp_symb_charset: Vec<char> = SIMP_SYMB_CHARSET.chars().into_iter().collect();
 
                 // gen first pass symbol from all letters
-                pass_candidate_vec.push(letters_charset[rng.gen_range(0..letters_charset.len())]);
+                pass_candidate_vec.push(letters_charset[rng.random_range(0..letters_charset.len())]);
 
                 // gen main pass body
                 for _ in 0..(res_len - 2) {
-                    pass_candidate_vec.push(pass_assembly[rng.gen_range(0..pass_assembly.len())]);
+                    pass_candidate_vec.push(pass_assembly[rng.random_range(0..pass_assembly.len())]);
                 }
 
                 // gen last pass symbol from simple symbols
                 pass_candidate_vec
-                    .push(simp_symb_charset[rng.gen_range(0..simp_symb_charset.len())]);
+                    .push(simp_symb_charset[rng.random_range(0..simp_symb_charset.len())]);
             } else {
                 pass_candidate_vec = (0..res_len)
-                    .map(|_| pass_assembly[rng.gen_range(0..pass_assembly.len())])
+                    .map(|_| pass_assembly[rng.random_range(0..pass_assembly.len())])
                     .collect();
             }
             String::from_iter(pass_candidate_vec)
