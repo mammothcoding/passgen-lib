@@ -4,14 +4,25 @@ mod gen_engine;
 ///
 /// # Examples
 ///
-/// You can create a strong token including all leterals, numbers and symbols:
+/// You can create a token that includes lowercase letters and numbers up to 30 characters long:
 ///
 /// ```
 /// use passgenlib::Passgen;
-/// let result = Passgen::default().generate(30);
+/// let result = Passgen::new().set_enabled_letters(true).set_enabled_numbers(true).generate(30);
 /// ```
 ///
-/// You can create a strong and usability password:
+/// You can create a default strong password including all literals, numbers and symbols:
+///
+/// ```
+/// use passgenlib::Passgen;
+/// let result = Passgen::default().generate(12);
+/// ```
+///
+/// You can create a strong and usability password.
+/// Including all characters, but
+/// the first position in the password is a capital or small letter,
+/// the last position is the symbol.
+/// 🔸 Excluded ambiguous characters `"0oOiIlL1"`.
 ///
 /// ```
 /// use passgenlib::Passgen;
