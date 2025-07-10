@@ -28,7 +28,7 @@ Readme на разных языках:
 passgen-lib = "1.2.1"
 ```
 
-#### Создать токен, включающий все литералы и цифры длиной 30 символов:
+#### Создать токен, включающий все прописные буквы и цифры длиной 30 символов:
 
 ```rust
 let result = Passgen::new().set_enabled_letters(true).set_enabled_numbers(true).generate(30);
