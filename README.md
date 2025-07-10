@@ -37,7 +37,7 @@ let result = Passgen::new().set_enabled_letters(true).set_enabled_numbers(true).
 let result = Passgen::default().generate(12);
 ```
 
-#### You can create a strong and usability password with default 8 characters long.
+#### You can create a strong and usability password with 8 characters long.
 Including all characters, but
 the first position in the password is a capital or small letter,
 the last position is the symbol.
