@@ -80,7 +80,7 @@ assert!(score >= 0 && score <= 100);
 #### Получить описание уровня сложности пароля на разных языках:
 
 ```rust
-use passgenlib::{Passgen, passgenlib::lang::lang::Language};
+use passgenlib::{Passgen, Language};
 let mut generator = Passgen::default();
 generator.set_password("MyP@ssw0rd");
 
