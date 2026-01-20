@@ -73,7 +73,8 @@ assert!(score >= 0 && score <= 100);
 
 #### You can get password strength level in multiple languages:
 ```rust
-use passgenlib::{Passgen, Language};
+use passgenlib::Passgen;
+use passgenlib::lang::lang::{Language, StrengthTranslations};
 let mut generator = Passgen::default();
 generator.set_password("MyP@ssw0rd");
 
