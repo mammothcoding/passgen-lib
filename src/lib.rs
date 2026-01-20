@@ -62,7 +62,8 @@ use crate::lang::lang::{Language, StrengthTranslations};
 /// You can get password strength level in multiple languages:
 ///
 /// ```
-/// use passgenlib::{Passgen, crate::lang::lang::Language};
+/// use passgenlib::Passgen;
+/// use passgenlib::lang::lang::{Language, StrengthTranslations};
 /// let mut generator = Passgen::default();
 /// generator.set_password("MyP@ssw0rd");
 ///
