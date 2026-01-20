@@ -1,5 +1,5 @@
-mod gen_engine;
-mod lang;
+pub mod gen_engine;
+pub mod lang;
 
 use crate::gen_engine::gen_engine::{LETTERS_CHARSET, NUM_CHARSET, SPEC_SYMB_CHARSET, U_LETTERS_CHARSET};
 use crate::lang::lang::{Language, StrengthTranslations};
