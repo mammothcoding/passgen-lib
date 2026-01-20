@@ -24,33 +24,99 @@ Library for generating cryptographically secure passwords/tokens and other sets 
 #### Include library to your project `Cargo.toml`:
 ```toml
 [dependencies]
-passgen-lib = "1.2.1"
+passgen-lib = "1.3.0"
 ```
 
 #### You can create a token that includes lowercase letters and numbers up to 30 characters long:
 ```rust
+use passgenlib::Passgen;
 let result = Passgen::new().set_enabled_letters(true).set_enabled_numbers(true).generate(30);
 ```
 
 #### You can create a default strong password including all literals, numbers and symbols:
 ```rust
+use passgenlib::Passgen;
 let result = Passgen::default().generate(12);
 ```
 
-#### You can create a strong and usability password with 8 characters long.
-Including all characters, but
-the first position in the password is a capital or small letter,
-the last position is the symbol.
+#### You can create a strong and usability password with 8 characters long. Including all characters, but the first position in the password is a capital or small letter, the last position is the symbol.
 
 🔸 Excluded ambiguous characters `"0oOiIlL1"`.
 ```rust
+use passgenlib::Passgen;
 let result = Passgen::default_strong_and_usab().generate(8);
 ```
 
 #### You can create a set from your custom charset 12 characters long:
 ```rust
+use passgenlib::Passgen;
 let result = Passgen::new().set_custom_charset("abcABC123⭕➖❎⚫⬛п₼⁂🙂").generate(12);
 ```
+
+#### You can validate the existing password against the added rules:
+```rust
+use passgenlib::Passgen;
+let mut generator = Passgen::default().set_enabled_letters(true).set_enabled_numbers(true);
+generator.set_password("MyP@ssw0rd");
+assert!(generator.validate_password());
+```
+
+#### You can get password strength score:
+```rust
+use passgenlib::Passgen;
+let mut generator = Passgen::default();
+generator.set_password("MyP@ssw0rd");
+let score = generator.password_strength_score();
+assert!(score >= 0 && score <= 100);
+```
+
+#### You can get password strength level in multiple languages:
+```rust
+use passgenlib::{Passgen, Language};
+let mut generator = Passgen::default();
+generator.set_password("MyP@ssw0rd");
+
+// English (default)
+assert_eq!(generator.password_strength_level(), "Strong");
+
+// Russian
+generator.set_language(Language::Russian);
+assert_eq!(generator.password_strength_level(), "Сильный");
+
+// Spanish
+generator.set_language(Language::Spanish);
+assert_eq!(generator.password_strength_level(), "Fuerte");
+```
+
+#### You can generate password and immediately get its strength score:
+```rust
+use passgenlib::Passgen;
+let mut generator = Passgen::default();
+let password = generator.generate(12);
+
+// The generated password is stored in the password field
+assert_eq!(generator.get_password(), password);
+
+// You can immediately get the strength score
+let score = generator.password_strength_score();
+assert!(score > 0);
+```
+#### Supported languages for displaying strength level descriptions:
+🔸English (default)
+🔸Chinese (简体中文)
+🔸Spanish (Español)
+🔸Hindi (हिन्दी)
+🔸Arabic (العربية)
+🔸Portuguese (Português)
+🔸Bengali (বাংলা)
+🔸Russian (Русский)
+🔸Japanese (日本語)
+🔸Punjabi (ਪੰਜਾਬੀ)
+🔸German (Deutsch)
+🔸Korean (한국어)
+🔸French (Français)
+🔸Turkish (Türkçe)
+🔸Italian (Italiano)
 
 ### Example of library integration in the [passgen-cmd](https://github.com/mammothcoding/passgen-cmd) tool and [passgen-telegram](https://github.com/mammothcoding/passgen-telegram) service.
 

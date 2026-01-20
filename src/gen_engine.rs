@@ -5,21 +5,21 @@ pub mod gen_engine {
     use rand_isaac::Isaac64Rng;
 
     // Letters charset.
-    const LETTERS_CHARSET: &str = "abcdefghijklmnopqrstuvwxyz";
+    pub const LETTERS_CHARSET: &str = "abcdefghijklmnopqrstuvwxyz";
     // Capital letters charset.
-    const U_LETTERS_CHARSET: &str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    pub const U_LETTERS_CHARSET: &str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     // Numeric charset.
-    const NUM_CHARSET: &str = "0123456789";
+    pub const NUM_CHARSET: &str = "0123456789";
     // Special symbols charset.
-    const SPEC_SYMB_CHARSET: &str = ")([]{}*&^%$#@!~";
+    pub const SPEC_SYMB_CHARSET: &str = ")([]{}*&^%$#@!~";
     // Simple special charset without inconvenient symbols.
-    const SIMP_SYMB_CHARSET: &str = "*&%$#@!";
+    pub const SIMP_SYMB_CHARSET: &str = "*&%$#@!";
     // Strong & usability charset.
     // Set without ambiguous and inconvenient letters with numbers.
-    const STRONG_USAB_CHARSET: &str = "ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789";
+    pub const STRONG_USAB_CHARSET: &str = "ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789";
     // Strong & usability letters charset.
     // Set without ambiguous and inconvenient letters.
-    const STRONG_USAB_LETTERS_CHARSET: &str = "ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz";
+    pub const STRONG_USAB_LETTERS_CHARSET: &str = "ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz";
 
     impl Passgen {
         pub(crate) fn generate_pass(&mut self, res_len: u32) -> String {
@@ -81,42 +81,6 @@ pub mod gen_engine {
                     .collect();
             }
             String::from_iter(pass_candidate_vec)
-        }
-
-        pub(crate) fn is_valid_pwd_by_consist(&self, pass: String) -> bool {
-            let check_to_available_for = |symbols: &str| -> bool {
-                let mut res = false;
-                for ch in pass.chars() {
-                    if symbols.contains(ch) {
-                        res = true;
-                        break;
-                    }
-                }
-                res
-            };
-
-            // compliance check
-            if self.enab_letters || self.enab_strong_usab {
-                if !check_to_available_for(LETTERS_CHARSET) {
-                    return false;
-                }
-            }
-            if self.enab_u_letters || self.enab_strong_usab {
-                if !check_to_available_for(U_LETTERS_CHARSET) {
-                    return false;
-                }
-            }
-            if self.enab_num || self.enab_strong_usab {
-                if !check_to_available_for(NUM_CHARSET) {
-                    return false;
-                }
-            }
-            if self.enab_spec_symbs || self.enab_strong_usab {
-                if !check_to_available_for(SPEC_SYMB_CHARSET) {
-                    return false;
-                }
-            }
-            true
         }
     }
 }
