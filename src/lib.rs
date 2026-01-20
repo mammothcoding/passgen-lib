@@ -39,7 +39,7 @@ use crate::lang::lang::{Language, StrengthTranslations};
 /// let result = Passgen::new().set_custom_charset("bla@.321").generate(8);
 /// ```
 ///
-/// YYou can validate the existing password against the added rules:
+/// You can validate the existing password against the added rules:
 ///
 /// ```
 /// use passgenlib::Passgen;
