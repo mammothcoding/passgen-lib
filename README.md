@@ -13,7 +13,7 @@ Readme in different languages:
 
 # ⚙ Passgen-lib
 
-Library for generating cryptographically secure passwords/tokens and other sets and sequences.
+Library for generating cryptographically secure passwords/tokens and other sets and sequences with password strength validation and multilingual support.
 
 [CSPRNGs](https://rust-random.github.io/book/guide-rngs.html#cryptographically-secure-pseudo-random-number-generators-csprngs) Isaac64Rng and Hc128Rng are used.
 
